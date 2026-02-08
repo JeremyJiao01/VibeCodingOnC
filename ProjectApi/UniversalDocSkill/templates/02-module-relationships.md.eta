@@ -1,0 +1,57 @@
+# <%= it.projectName %> - Module Relationships
+
+> Generated: <%= it.analysisDate %>
+
+## Dependency Graph
+
+```mermaid
+<%= it.mermaidDependencyGraph %>
+```
+
+## Import Dependencies
+
+<% it.dependencyEdges.forEach(function(edge) { %>
+- **<%= edge.source %>** → **<%= edge.target %>** (<%= edge.type %>)<% if (edge.importedSymbols && edge.importedSymbols.length > 0) { %>: `<%= edge.importedSymbols.join('`, `') %>`<% } %>
+<% }) %>
+
+## Data Flow
+
+<% if (it.dataFlowEdges.length > 0) { %>
+| Source | Target | Data Type | Mechanism |
+|--------|--------|-----------|-----------|
+<% it.dataFlowEdges.forEach(function(flow) { %>
+| <%= flow.source %> | <%= flow.target %> | `<%= flow.dataType %>` | <%= flow.mechanism %> |
+<% }) %>
+<% } else { %>
+No significant data flow edges detected.
+<% } %>
+
+## Communication Patterns
+
+<% if (it.communicationPatterns.length > 0) { %>
+<% it.communicationPatterns.forEach(function(pattern) { %>
+### <%= pattern.pattern %>
+
+**Participants**: <%= pattern.participants.join(', ') %>
+
+<%= pattern.description %>
+
+<% }) %>
+<% } else { %>
+No complex communication patterns detected.
+<% } %>
+
+<% if (it.circularDependencies && it.circularDependencies.length > 0) { %>
+## Circular Dependencies
+
+<% it.circularDependencies.forEach(function(cd) { %>
+- **[<%= cd.severity.toUpperCase() %>]** <%= cd.cycle.join(' → ') %> → <%= cd.cycle[0] %>
+<% if (cd.suggestion) { %>
+  - Suggestion: <%= cd.suggestion %>
+<% } %>
+<% }) %>
+<% } %>
+
+---
+
+[Back to Architecture Overview](01-architecture-overview.md) | [Back to Summary Hub](05-summary-hub.md)

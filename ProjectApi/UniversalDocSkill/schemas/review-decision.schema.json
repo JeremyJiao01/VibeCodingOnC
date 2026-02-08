@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Supervisor Review Decision",
+  "description": "Supervisor Agent 在每个 Phase 完成后输出的审查决策",
+  "type": "object",
+  "required": ["phase", "phaseName", "verdict", "overallScore", "summary", "actions", "moduleNotes", "timestamp"],
+  "properties": {
+    "phase": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 5,
+      "description": "Phase 编号（0-5）"
+    },
+    "phaseName": {
+      "type": "string",
+      "enum": ["discovery", "architecture", "relationships", "analysis", "apiExtraction", "rendering"],
+      "description": "Phase 名称"
+    },
+    "verdict": {
+      "type": "string",
+      "enum": ["approved", "approved_with_actions", "rejected", "escalate"],
+      "description": "审查结论"
+    },
+    "overallScore": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "整体质量评分（0-100）"
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 10,
+      "description": "审查摘要说明"
+    },
+    "actions": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/action" },
+      "description": "需要执行的操作列表（approved 时为空数组）"
+    },
+    "moduleNotes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "按模块 ID 记录的审查备注，将写入 checklist 的 supervisorNotes"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "审查时间戳"
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "action": {
+      "type": "object",
+      "required": ["type", "reason"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["retry_module", "skip_module", "update_checklist", "adjust_config", "flag_for_user"],
+          "description": "操作类型"
+        },
+        "moduleId": {
+          "type": "string",
+          "pattern": "^m\\d{3}$",
+          "description": "目标模块 ID（retry_module / skip_module / update_checklist 必填）"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 5,
+          "description": "执行该操作的原因"
+        },
+        "field": {
+          "type": "string",
+          "description": "update_checklist 时要修改的字段名"
+        },
+        "value": {
+          "description": "update_checklist / adjust_config 时的新值"
+        },
+        "key": {
+          "type": "string",
+          "description": "adjust_config 时的参数键"
+        },
+        "message": {
+          "type": "string",
+          "description": "flag_for_user 时的提示信息"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

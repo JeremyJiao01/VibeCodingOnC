@@ -1,0 +1,8 @@
+{
+  "name": "project-api",
+  "description": "Universal Codebase Documenter - 语言无关的代码仓文档自动生成 Skill",
+  "version": "1.0.0",
+  "author": {
+    "name": "Jeremy"
+  }
+}

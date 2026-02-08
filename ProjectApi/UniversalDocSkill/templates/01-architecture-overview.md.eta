@@ -1,0 +1,75 @@
+# <%= it.projectName %> - Architecture Overview
+
+> Generated: <%= it.analysisDate %>
+
+## Tech Stack
+
+<% it.techStack.forEach(function(tech) { %>
+- **<%= tech.category %>**: <%= tech.name %><% if (tech.version) { %> (<%= tech.version %>)<% } %>
+<% }) %>
+
+## Entry Points
+
+<% it.entryPoints.forEach(function(entry) { %>
+### `<%= entry.path %>`
+
+<%= entry.description %>
+
+<% }) %>
+
+## Directory Structure
+
+```
+<%= it.directoryTree %>
+```
+
+<% if (it.hierarchicalStructure) { %>
+## Hierarchical Structure (Bottom-Up Analysis)
+
+<%= it.hierarchicalStructure.description %>
+
+<% it.hierarchicalStructure.layers.forEach(function(layer) { %>
+### <%= layer.name %> (Level <%= layer.level %>)
+
+| Directory | Responsibility | Files | Modules |
+|-----------|---------------|-------|---------|
+<% layer.directories.forEach(function(dir) { %>
+| `<%= dir.path %>` | <%= dir.responsibility %> | <%= dir.fileCount %> | <%= dir.modules.join(', ') %> |
+<% }) %>
+
+<% }) %>
+<% } %>
+
+## Architectural Pattern
+
+**Pattern**: <%= it.architecturalPattern.name %>
+
+<%= it.architecturalPattern.description %>
+
+<% if (it.architecturalPattern.layers && it.architecturalPattern.layers.length > 0) { %>
+### Layers
+
+| Layer | Responsibility | Key Modules |
+|-------|---------------|-------------|
+<% it.architecturalPattern.layers.forEach(function(layer) { %>
+| <%= layer.name %> | <%= layer.responsibility %> | <%= layer.modules.join(', ') %> |
+<% }) %>
+<% } %>
+
+## Architecture Diagram
+
+```mermaid
+<%= it.mermaidArchDiagram %>
+```
+
+## Module Overview
+
+| Module | Category | Files | Description |
+|--------|----------|-------|-------------|
+<% it.modules.forEach(function(mod) { %>
+| [<%= mod.name %>](modules/<%= mod.name.toLowerCase().replace(/\s+/g, '-') %>.md) | <%= mod.category %> | <%= mod.fileCount %> | <%= mod.description %> |
+<% }) %>
+
+---
+
+[Back to Summary Hub](05-summary-hub.md)

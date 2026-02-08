@@ -1,0 +1,71 @@
+# Module: <%= it.moduleName %>
+
+> Module ID: `<%= it.moduleId %>` | Files: <%= it.fileCount %> | Lines: <%= it.totalLines %>
+
+## Responsibility
+
+<%= it.responsibility %>
+
+## Core Logic
+
+<%= it.coreLogic %>
+
+## Key Algorithms
+
+<% if (it.keyAlgorithms.length > 0) { %>
+<% it.keyAlgorithms.forEach(function(algo) { %>
+### <%= algo.name %>
+
+<%= algo.description %>
+
+- **Location**: `<%= algo.location %>`
+<% if (algo.timeComplexity) { %>- **Time Complexity**: <%= algo.timeComplexity %><% } %>
+<% if (algo.spaceComplexity) { %>- **Space Complexity**: <%= algo.spaceComplexity %><% } %>
+
+<% }) %>
+<% } else { %>
+No notable algorithms identified.
+<% } %>
+
+## Data Structures
+
+<% if (it.dataStructures.length > 0) { %>
+<% it.dataStructures.forEach(function(ds) { %>
+### `<%= ds.name %>` (<%= ds.type %>)
+
+<%= ds.description %>
+
+<% if (ds.fields && ds.fields.length > 0) { %>
+| Field | Type | Description |
+|-------|------|-------------|
+<% ds.fields.forEach(function(f) { %>
+| `<%= f.name %>` | `<%= f.type %>` | <%= f.description || '-' %> |
+<% }) %>
+<% } %>
+
+<% }) %>
+<% } else { %>
+No notable data structures identified.
+<% } %>
+
+## Dependencies
+
+<% if (it.dependencies.length > 0) { %>
+| Target | Type | Description |
+|--------|------|-------------|
+<% it.dependencies.forEach(function(dep) { %>
+| `<%= dep.target %>` | <%= dep.type %> | <%= dep.description || '-' %> |
+<% }) %>
+<% } else { %>
+No external dependencies.
+<% } %>
+
+## Source Files
+
+<% it.files.forEach(function(file) { %>
+- `<%= file %>`
+<% }) %>
+
+---
+
+[Back to Architecture Overview](../01-architecture-overview.md) | [API Reference](<%= '../api/' + it.moduleName.toLowerCase().replace(/\s+/g, '-') + '-api.md' %>) | [Back to Summary Hub](../05-summary-hub.md)

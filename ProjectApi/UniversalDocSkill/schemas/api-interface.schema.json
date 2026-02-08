@@ -1,0 +1,138 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "API Interface",
+  "description": "Output schema for APIExtractor sub-agent. One file per module: apis/m{NNN}-api.json",
+  "type": "object",
+  "required": ["moduleId", "moduleName", "publicInterfaces", "exportedTypes", "constants"],
+  "properties": {
+    "moduleId": {
+      "type": "string",
+      "pattern": "^m\\d{3}$"
+    },
+    "moduleName": {
+      "type": "string",
+      "minLength": 2
+    },
+    "publicInterfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "signature", "parameters", "returnValue", "description"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Function/method name"
+          },
+          "signature": {
+            "type": "string",
+            "description": "Full function signature in source language"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 20
+          },
+          "parameters": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "type", "description"],
+              "properties": {
+                "name": { "type": "string" },
+                "type": { "type": "string" },
+                "description": { "type": "string" },
+                "optional": { "type": "boolean", "default": false },
+                "defaultValue": { "type": "string" }
+              }
+            }
+          },
+          "returnValue": {
+            "type": "object",
+            "required": ["type", "description"],
+            "properties": {
+              "type": { "type": "string" },
+              "description": { "type": "string" }
+            }
+          },
+          "examples": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["code"],
+              "properties": {
+                "code": { "type": "string" },
+                "description": { "type": "string" },
+                "language": { "type": "string" }
+              }
+            }
+          },
+          "throws": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["type", "condition"],
+              "properties": {
+                "type": { "type": "string" },
+                "condition": { "type": "string" }
+              }
+            }
+          },
+          "deprecated": { "type": "boolean", "default": false },
+          "since": { "type": "string" },
+          "location": {
+            "type": "string",
+            "description": "Relative file path with line number"
+          }
+        }
+      }
+    },
+    "exportedTypes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "kind", "description"],
+        "properties": {
+          "name": { "type": "string" },
+          "kind": {
+            "type": "string",
+            "enum": ["interface", "type_alias", "enum", "class", "struct", "union", "protocol", "trait"]
+          },
+          "description": {
+            "type": "string",
+            "minLength": 20
+          },
+          "definition": {
+            "type": "string",
+            "description": "Simplified type definition"
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "type"],
+              "properties": {
+                "name": { "type": "string" },
+                "type": { "type": "string" },
+                "description": { "type": "string" },
+                "optional": { "type": "boolean", "default": false }
+              }
+            }
+          }
+        }
+      }
+    },
+    "constants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "type", "value"],
+        "properties": {
+          "name": { "type": "string" },
+          "type": { "type": "string" },
+          "value": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

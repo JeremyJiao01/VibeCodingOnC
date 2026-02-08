@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "UniversalDocSkill Checklist",
+  "description": "Tracks completion status of each module across all documentation phases",
+  "type": "object",
+  "required": ["projectName", "analysisDate", "totalModules", "phases", "modules"],
+  "properties": {
+    "projectName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "analysisDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "totalModules": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "phases": {
+      "type": "object",
+      "required": ["discovery", "architecture", "relationships", "analysis", "apiExtraction", "rendering"],
+      "properties": {
+        "discovery": { "$ref": "#/definitions/phaseStatus" },
+        "architecture": { "$ref": "#/definitions/phaseStatus" },
+        "relationships": { "$ref": "#/definitions/phaseStatus" },
+        "analysis": { "$ref": "#/definitions/phaseStatus" },
+        "apiExtraction": { "$ref": "#/definitions/phaseStatus" },
+        "rendering": { "$ref": "#/definitions/phaseStatus" }
+      },
+      "additionalProperties": false
+    },
+    "modules": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/moduleEntry" }
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "phaseStatus": {
+      "type": "string",
+      "enum": ["pending", "in_progress", "completed", "skipped", "failed"]
+    },
+    "moduleStatus": {
+      "type": "string",
+      "enum": ["pending", "in_progress", "completed", "skipped", "failed"]
+    },
+    "moduleEntry": {
+      "type": "object",
+      "required": ["moduleId", "moduleName", "files", "architecture", "relationships", "logic", "apis", "rendered", "errors", "reviewRequired", "supervisorNotes"],
+      "properties": {
+        "moduleId": {
+          "type": "string",
+          "pattern": "^m\\d{3}$"
+        },
+        "moduleName": {
+          "type": "string",
+          "minLength": 2
+        },
+        "files": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "architecture": { "$ref": "#/definitions/moduleStatus" },
+        "relationships": { "$ref": "#/definitions/moduleStatus" },
+        "logic": { "$ref": "#/definitions/moduleStatus" },
+        "apis": { "$ref": "#/definitions/moduleStatus" },
+        "rendered": { "$ref": "#/definitions/moduleStatus" },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["phase", "message", "timestamp"],
+            "properties": {
+              "phase": { "type": "string" },
+              "message": { "type": "string" },
+              "timestamp": { "type": "string", "format": "date-time" },
+              "retryCount": { "type": "integer", "minimum": 0, "maximum": 3 }
+            }
+          }
+        },
+        "reviewRequired": {
+          "type": "boolean"
+        },
+        "supervisorNotes": {
+          "type": "string",
+          "description": "Notes or flags added by Supervisor during review",
+          "default": ""
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

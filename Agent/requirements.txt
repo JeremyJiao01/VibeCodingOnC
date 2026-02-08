@@ -1,0 +1,4 @@
+camel-ai
+jupyter
+ipywidgets
+python-dotenv

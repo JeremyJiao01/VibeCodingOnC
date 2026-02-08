@@ -1,0 +1,103 @@
+# API Reference: <%= it.moduleName %>
+
+> Module ID: `<%= it.moduleId %>`
+
+## Public Interfaces
+
+<% if (it.publicInterfaces.length > 0) { %>
+<% it.publicInterfaces.forEach(function(api) { %>
+### `<%= api.name %>`
+
+```<%= it.language || '' %>
+<%= api.signature %>
+```
+
+<%= api.description %>
+
+<% if (api.parameters.length > 0) { %>
+**Parameters:**
+
+| Name | Type | Description | Required | Default |
+|------|------|-------------|----------|---------|
+<% api.parameters.forEach(function(p) { %>
+| `<%= p.name %>` | `<%= p.type %>` | <%= p.description %> | <%= p.optional ? 'No' : 'Yes' %> | <%= p.defaultValue || '-' %> |
+<% }) %>
+<% } %>
+
+**Returns:** `<%= api.returnValue.type %>` - <%= api.returnValue.description %>
+
+<% if (api.throws && api.throws.length > 0) { %>
+**Throws:**
+
+<% api.throws.forEach(function(t) { %>
+- `<%= t.type %>` - <%= t.condition %>
+<% }) %>
+<% } %>
+
+<% if (api.examples && api.examples.length > 0) { %>
+**Examples:**
+
+<% api.examples.forEach(function(ex) { %>
+<% if (ex.description) { %><%= ex.description %>
+
+<% } %>
+```<%= ex.language || it.language || '' %>
+<%= ex.code %>
+```
+
+<% }) %>
+<% } %>
+
+<% if (api.deprecated) { %>
+> **Deprecated**<% if (api.since) { %> since <%= api.since %><% } %>
+<% } %>
+
+---
+
+<% }) %>
+<% } else { %>
+No public interfaces exported by this module.
+<% } %>
+
+## Exported Types
+
+<% if (it.exportedTypes.length > 0) { %>
+<% it.exportedTypes.forEach(function(t) { %>
+### `<%= t.name %>` (<%= t.kind %>)
+
+<%= t.description %>
+
+<% if (t.definition) { %>
+```<%= it.language || '' %>
+<%= t.definition %>
+```
+<% } %>
+
+<% if (t.members && t.members.length > 0) { %>
+| Member | Type | Description | Optional |
+|--------|------|-------------|----------|
+<% t.members.forEach(function(m) { %>
+| `<%= m.name %>` | `<%= m.type %>` | <%= m.description || '-' %> | <%= m.optional ? 'Yes' : 'No' %> |
+<% }) %>
+<% } %>
+
+<% }) %>
+<% } else { %>
+No exported types.
+<% } %>
+
+## Constants
+
+<% if (it.constants.length > 0) { %>
+| Name | Type | Value | Description |
+|------|------|-------|-------------|
+<% it.constants.forEach(function(c) { %>
+| `<%= c.name %>` | `<%= c.type %>` | `<%= c.value %>` | <%= c.description || '-' %> |
+<% }) %>
+<% } else { %>
+No exported constants.
+<% } %>
+
+---
+
+[Module Detail](<%= '../modules/' + it.moduleName.toLowerCase().replace(/\s+/g, '-') + '.md' %>) | [Back to Summary Hub](../05-summary-hub.md)

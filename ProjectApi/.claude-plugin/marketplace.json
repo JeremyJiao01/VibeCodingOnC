@@ -1,0 +1,13 @@
+{
+    "name": "my-plugins",
+    "owner": {
+        "name": "jeremy"
+    },
+    "plugins": [
+        {
+            "name": "project-api",
+            "source": "./UniversalDocSkill",
+            "description": "A great plugin to show the info of a project"
+        }
+    ]
+}
